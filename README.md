@@ -1,68 +1,59 @@
-First step is to run the script from codes.zip file, this will compile object for all provided c++ files.
-We have 3 script file
-	- compilation script file to compile all program
-	- execution script file to execute all compiled code.
-	- extracredit script it is to compile and execute extra credit code I.e. dd compare code and Google benchmark. 
+Here is the revised README for the `ioOptimization` project:
 
-For the execution and extra credit script you will need to change file-names accordingly.
-Incase of "Permission denied issue" you can run "chmod -x <scriptname>" 
+# ioOptimization
 
-IF you want perfect file size for execution on your in reasonable time, please run 'run2' separately and change file name accordingly in executionScript.sh
+## Overview
+The `ioOptimization` project focuses on optimizing disk I/O operations using various C++ programs. The project is divided into multiple parts, each targeting different aspects of I/O optimization such as measurement, caching, system calls, and raw performance.
 
-In executionScript.sh and extracreditScript.sh by default filename is "ubuntu-21.04-desktop-amd64.iso". You can try changing filename or run code manually also.
+## Setup and Usage
+1. Extract the `codes.zip` file and run the compilation script to compile all provided C++ files.
+2. There are three script files:
+   - **Compilation script**: Compiles all programs.
+   - **Execution script**: Executes all compiled code.
+   - **Extra credit script**: Compiles and executes additional code (e.g., dd compare code and Google benchmark).
 
-Note: code compilation is "g++ -std=c++11 -O3 run.cpp -o run"
+### Scripts
+- For the execution and extra credit scripts, you may need to change filenames accordingly.
+- If you encounter "Permission denied" issues, run `chmod -x <scriptname>`.
+- For optimal file size execution within a reasonable time, run 'run2' separately and change the filename accordingly in `executionScript.sh`.
+- Default filename in `executionScript.sh` and `extracreditScript.sh` is "ubuntu-21.04-desktop-amd64.iso". You can change the filename or run the code manually.
 
-For Part - 1
-	for this part we have run.cpp, and the object created via script is 'run2'.
-	To perform "read" operation: ./run <file_name> -r block_size block_count
-		this operation will perform read on file and generate its XOR value.
-	To perform "write" operation: ./run <file_name> -w block_size block_count
-		this will generate a file with file_size = block_size * block_count
+### Compilation
+- Code compilation command: `g++ -std=c++11 -O3 run.cpp -o run`
 
-For part - 2
-	for this part we have run2.cpp and the object created via script is "run2"
-	usage is : ./run2 <file_name>  block_size
-		this operation will read the given file, and returns output as follow:
-			- Time taken to read file
-			- XOR value of file
-			- total blocks read(block_count)
+## Project Breakdown
 
-For part - 3
-	for this part we have run3.cpp and the object created via script is "run3"
-	usage: ./run3 <file_name> block_size
-		this operation will read the given file, and returns output as follow:
-			- Speed of reading in MiB/s
-			- XOR value of file
+### Part 1: Basics
+Write a program that can read and write a file from disk using the C/C++ library's open, read, write, and close functions.
+- Parameters:
+  - File name
+  - File size (for writing)
+  - Block size (how much to read with a single call)
+- Execute: `./run <filename> [-r|-w] <block_size> <block_count>`
 
-For part - 4
-	for this part we have same code/object from part 3, that is "run3". 
-	since purpose of this part is to understand caching of disk I/O. First thing we do before every iteration is to clear cache.
-	for clearing cache we run 'sudo sh -c "/usr/bin/echo 3 > /proc/sys/vm/drop_caches"' on our linux system. 
-	steps are as follow:
-	- clear cache using 'sudo sh -c "/usr/bin/echo 3 > /proc/sys/vm/drop_caches"'
-	- then do "./run3 <file_name> block_size"
-	- and after previous execution perform "./run3 <file_name> block_size" again, you will notice that speed has increased
-	- we cleared cache second time and got its reading.
+### Part 2: Measurement
+Write a program to find a file size that can be read in a reasonable time (between 5 and 15 seconds).
+- Input: block size
+- Output: file size/block count
+- Execute: `./run2 <filename> <block_size>`
 
+### Part 3: Raw Performance
+Make your program output the performance achieved in MiB/s and create a graph showing performance as block size changes.
 
-For part - 5
-	for this par two have 2 code files, run5a.cpp and run5b.cpp and there respective objects, "run5a" and "run5b"
-	"run5a" performs reading using read system call.
-		usage: ./run5a <file_name> 1
-	
+### Part 4: Caching
+Experiment with clearing the caches and not. Create a graph showing performance for cached and non-cached reads for various block sizes.
+- Clear cache: `sudo sh -c "/usr/bin/echo 3 > /proc/sys/vm/drop_caches"`
+- Execute:
+  - `./run3 <file_name> block_size`
+  - `./run3 <file_name> block_size` (again for cached performance)
 
-	"run5b" performs reading using read system call.
-		usage: ./run5b <file_name> 1
+### Part 5: System Calls
+Measure performance in MiB/s and B/s when using a block size of 1 byte.
+- Execute: `./run5a <file_name> 1` and `./run5b <file_name> 1`
 
-	"1" is default block_size for this task.
+### Part 6: Fast Performance
+Optimize your program to run as fast as possible. Report both cached and non-cached performance numbers.
+- Execute: `./fast <filename>`
 
-For part - 6
-
-	to perform this task we generate a run6 object from run6.cpp file
-	before running you need to check the optimal block_size for your system, in our case we used 65536.
-	usage: ./fast <filename>
-	
-
-
-
+## Conclusion
+This project provides a comprehensive framework for optimizing disk I/O operations. Each part focuses on different optimization techniques, making it a versatile tool for performance analysis and improvement.
